@@ -27,13 +27,15 @@ public class TaskControllerTest {
         MockitoAnnotations.initMocks(this); //inicializa o mock
     }
 
+    private String message = "Deveria ter lançado uma ValidationException";
+
     @Test
     public void naoDeveSalvarTaskSemDescricao() {
         Task todo = new Task();
         todo.setDueDate(LocalDate.now());
         try {
             controller.save(todo);
-            Assert.fail("Deveria ter lançado uma ValidationException");
+            Assert.fail(message);
         } catch (ValidationException e) {
             Assert.assertEquals("Fill the task description", e.getMessage());
         }
@@ -42,10 +44,10 @@ public class TaskControllerTest {
     @Test
     public void naoDeveSalvarTaskSemData() {
         Task todo = new Task();
-        todo.setTask("Descrição");
+        todo.setTask("Descrição 01");
         try {
             controller.save(todo);
-            Assert.fail("Deveria ter lançado uma ValidationException");
+            Assert.fail(message);
         } catch (ValidationException e) {
             Assert.assertEquals("Fill the due date", e.getMessage());
         }
@@ -54,11 +56,11 @@ public class TaskControllerTest {
     @Test
     public void naoDeveSalvarTaskComDataPassada() {
         Task todo = new Task();
-        todo.setTask("Descrição");
+        todo.setTask("Descrição 02");
         todo.setDueDate(LocalDate.of(2010, 1, 1));
         try {
             controller.save(todo);
-            Assert.fail("Deveria ter lançado uma ValidationException");
+            Assert.fail(message);
         } catch (ValidationException e) {
             Assert.assertEquals("Due date must not be in past", e.getMessage());
         }
@@ -67,7 +69,7 @@ public class TaskControllerTest {
     @Test
     public void deveSalvarTaskComSucesso() throws ValidationException {
         Task todo = new Task();
-        todo.setTask("Descrição");
+        todo.setTask("Descrição 03");
         todo.setDueDate(LocalDate.now());
         controller.save(todo);
         Mockito.verify(taskRepo).save(todo); //verifica se o metodo save foi chamado
