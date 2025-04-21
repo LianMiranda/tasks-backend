@@ -42,5 +42,14 @@ pipeline {
                 }
             }
         }
+        stage('Deploy FrontEnd') {
+            steps {
+                dir('tasks-frontend') {
+                    git 'https://github.com/LianMiranda/tasks-frontend.git'
+                    bat 'mvn clean package'
+                    deploy adapters: [tomcat9(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8080/')], contextPath: 'tasks', war: 'target/tasks.war'
+                }
+            }
+        }
     }
 }
