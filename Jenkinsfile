@@ -51,5 +51,12 @@ pipeline {
                 }
             }
         }
+        stage('Functional Tests') {
+            steps {
+                dir('tasks-functional-tests') {
+                    git 'https://github.com/LianMiranda/tasks-functional-tests.git'
+                    bat 'mvn test'
+                }
+            }
     }
 }
