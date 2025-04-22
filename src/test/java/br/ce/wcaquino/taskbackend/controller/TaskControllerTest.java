@@ -74,4 +74,14 @@ public class TaskControllerTest {
         controller.save(todo);
         Mockito.verify(taskRepo).save(todo); //verifica se o metodo save foi chamado
     }
+
+    @Test
+    public void deveRemoverTarefaComSucesso() throws ValidationException {
+        Task todo = new Task();
+        todo.setTask("Descrição 04");
+        todo.setDueDate(LocalDate.now());
+        controller.save(todo);
+        controller.delete(todo.getId());
+        Mockito.verify(taskRepo).deleteById(todo.getId());
+    }
 }
